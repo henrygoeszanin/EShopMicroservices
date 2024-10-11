@@ -5,12 +5,12 @@ public record CreateProductCommand(string Name, List<string> Category, string De
 // Define o resultado que será retornado após a criação do produto
 public record CreateProductResult(Guid Id);
 
-// Manipulador do comando CreateProductCommand que trata a lógica de criação d eum novo produto
+// Manipulador do comando CreateProductCommand que trata a lógica de criação de um novo produto
 internal class CreateProductCommandHandler(IDocumentSession session) : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        // Criar um entidade de produto a partir do command object
+        // Criar uma entidade de produto a partir do command object
         var product = new Product
         {
             Name = command.Name,
@@ -28,7 +28,5 @@ internal class CreateProductCommandHandler(IDocumentSession session) : ICommandH
 
         // Retornar o resultado contendo o ID do produto criado
         return new CreateProductResult(product.Id);
-
-
     }
 }
