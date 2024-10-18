@@ -1,8 +1,26 @@
 ﻿
+using Catalog.API.Products.CreateProduct;
+
 namespace Catalog.API.Products.UpdateProduct;
 
 public record UpdateProductCommand(Guid Id, string Name, List<string> Category, string Description, string ImageFile, decimal Price)
     : ICommand<UpdateProductResult>;
+
+public class UpdateCommandValidator : AbstractValidator<UpdateProductCommand>
+{
+    public UpdateCommandValidator()
+    {
+        RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required");
+
+        RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required")
+            .Length(5, 1000).WithMessage("Description must be between 5 and 1000 characters");
+
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required")
+            .Length(2,150).WithMessage("Name must be between 2 and 150 characters");
+
+        RuleFor(x => x.Price).NotEmpty().WithMessage("Price is required")
+            .GreaterThan(0).WithMessage("Price must be greater than 0");    }
+}
 
 public record UpdateProductResult(bool IsSuccess);
 internal class UpdateProductCommandHandler
@@ -11,13 +29,13 @@ internal class UpdateProductCommandHandler
 {
     public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
-        logger.LogInformation("GetProductByIdQueryHandler.Handle called with {@Query}", command);
+        logger.LogInformation("UpdateProductCommandHandler.Handle called with command: {Command}", command);
 
         var product = await session.LoadAsync<Product>(command.Id, cancellationToken);
 
         if (product is null)
         {
-            throw new ProductNotFoundException();
+            throw new ProductNotFoundException(command.Id);
         }   
 
         product.Name = command.Name;

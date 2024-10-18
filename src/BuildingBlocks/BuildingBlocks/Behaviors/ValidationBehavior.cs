@@ -9,7 +9,7 @@ namespace BuildingBlocks.Behaviors
     public class ValidationBehavior<TRequest, TResponse>
         (IEnumerable<IValidator<TRequest>> validators) // Injeta os validadores que serão aplicados ao request
         : IPipelineBehavior<TRequest, TResponse> // Implementa o comportamento de pipeline (MediatR)
-        where TRequest : ICommand<TRequest> // Restringe o TRequest para ser do tipo ICommand<TRequest>
+        where TRequest : ICommand<TResponse> // Restringe o TRequest para ser do tipo ICommand<TRequest>
     {
         // Método principal que intercepta a requisição para aplicar validações antes de passar adiante
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)

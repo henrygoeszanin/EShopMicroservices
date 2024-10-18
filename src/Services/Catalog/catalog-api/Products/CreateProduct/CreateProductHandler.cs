@@ -19,17 +19,13 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 }
 
 // Manipulador do comando CreateProductCommand que trata a lógica de criação de um novo produto
-internal class CreateProductCommandHandler(IDocumentSession session, IValidator<CreateProductCommand> validator) : ICommandHandler<CreateProductCommand, CreateProductResult>
+internal class CreateProductCommandHandler(IDocumentSession session, ILogger<CreateProductCommandHandler> logger) : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
 
         // Chama a validação de entrada de dados
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-        var validationErrors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-        if (validationErrors.Any()) {
-            throw new ValidationException(validationErrors.FirstOrDefault());
-        }
+        logger.LogInformation("CreateProductCommandHandler.Handle called with command: {Command}", command);
 
         // Criar uma entidade de produto a partir do command object
         var product = new Product
