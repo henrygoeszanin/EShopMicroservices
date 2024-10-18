@@ -1,12 +1,17 @@
+using BuildingBlocks.Behaviors;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Add services to the container
+// Adiciona os serviços a serem usados
 builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 builder.Services.AddMarten(options =>
 {
@@ -15,7 +20,7 @@ builder.Services.AddMarten(options =>
 
 var app = builder.Build();
 
-//Configure the HTTP request pipeline
+// Configura a pipeline das requisições HTTP
 app.MapCarter();
 
 app.Run();
