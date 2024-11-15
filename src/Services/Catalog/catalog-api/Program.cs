@@ -31,6 +31,9 @@ if(builder.Environment.IsDevelopment())
 // Adiciona um manipulador de exceções personalizado
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+// Adiciona Health Checks
+builder.Services.AddHealthChecks();
+
 // Constrói o aplicativo
 var app = builder.Build();
 
@@ -39,6 +42,9 @@ app.MapCarter();
 
 // Configura o manipulador de exceções
 app.UseExceptionHandler(options => {});
+
+// Configura o Health Check
+app.UseHealthChecks("/health");
 
 // Executa o aplicativo
 app.Run();
