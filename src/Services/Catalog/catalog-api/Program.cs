@@ -39,6 +39,12 @@ builder.Services.AddHealthChecks()
     // Adiciona um Health Check para o banco de dados usando AspNetCore.HealthChecks
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
+// Configura o Kestrel para usar as configurações do appsettings
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Configure(builder.Configuration.GetSection("Kestrel"));
+});
+
 // Constrói o aplicativo
 var app = builder.Build();
 
