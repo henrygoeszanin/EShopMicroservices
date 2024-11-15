@@ -1,3 +1,6 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Adiciona os serviços a serem usados
@@ -32,7 +35,9 @@ if(builder.Environment.IsDevelopment())
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 // Adiciona Health Checks
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks()
+    // Adiciona um Health Check para o banco de dados usando AspNetCore.HealthChecks
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 // Constrói o aplicativo
 var app = builder.Build();
@@ -43,8 +48,12 @@ app.MapCarter();
 // Configura o manipulador de exceções
 app.UseExceptionHandler(options => {});
 
-// Configura o Health Check
-app.UseHealthChecks("/health");
+// Configura o Health Check para usar a UI da biblioteca HealthChecks.UI
+app.UseHealthChecks("/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 
 // Executa o aplicativo
 app.Run();
