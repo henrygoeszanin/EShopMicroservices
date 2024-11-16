@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{0A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{40708334-AF9D-40EF-810E-6F12F82F25E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "catalog-api", "..\src\Services\Catalog\catalog-api\catalog-api.csproj", "{5D548842-644B-4FBA-B0CE-20EE8E519E37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API", "..\src\Services\Catalog\Catalog.API\Catalog.API.csproj", "{5D548842-644B-4FBA-B0CE-20EE8E519E37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

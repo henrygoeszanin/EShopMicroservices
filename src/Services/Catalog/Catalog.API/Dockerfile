@@ -10,13 +10,13 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copiar arquivos de projeto e restaurar dependências
-COPY ["Services/Catalog/catalog-api/Catalog.API.csproj", "Services/Catalog/catalog-api/"]
+COPY ["Services/Catalog/Catalog.API/Catalog.API.csproj", "Services/Catalog/Catalog.API/"]
 COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
-RUN dotnet restore "Services/Catalog/catalog-api/Catalog.API.csproj"
+RUN dotnet restore "Services/Catalog/Catalog.API/Catalog.API.csproj"
 
 # Copiar todo o código e construir o aplicativo
 COPY . .
-WORKDIR "/src/Services/Catalog/catalog-api"
+WORKDIR "/src/Services/Catalog/Catalog.API"
 RUN dotnet build "Catalog.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Fase de publicação
