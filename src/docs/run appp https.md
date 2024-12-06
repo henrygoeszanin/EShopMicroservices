@@ -1,0 +1,1 @@
+dotnet watch run --launch-profile https --project "d:\Dev\.NET\Curso .Net 8 Microservice - EShop Microservices\EShopMicroservices\src\Services\Catalog\Catalog.API\Catalog.API.csproj"
