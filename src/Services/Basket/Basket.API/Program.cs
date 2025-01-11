@@ -1,3 +1,5 @@
+using BuildingBlocks.Exceptions.Handler;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // adicionar servicos ao container
@@ -16,9 +18,15 @@ builder.Services.AddMarten(options =>
     options.Schema.For<ShoppingCart>().Identity(x => x.UserName);
 }).UseLightweightSessions();
 
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
 var app = builder.Build();
 
 //configura o pipeline para requisiçaõ HTP request pipeline
 app.MapCarter();
+
+app.UseExceptionHandler(options =>{ });
 
 await Task.Run(app.Run);

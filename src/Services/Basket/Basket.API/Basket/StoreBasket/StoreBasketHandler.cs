@@ -11,16 +11,18 @@ public class StoreBasketCommandValidator : AbstractValidator<StoreBasketCommand>
         RuleFor(x => x.Cart.UserName).NotEmpty().WithMessage("UserName cannot be empty");
     }
 }
-public class StoreBasketCommandHandler : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+public class StoreBasketCommandHandler(IBasketRepository _repository)
+ : ICommandHandler<StoreBasketCommand, StoreBasketResult>
 {
 
     public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
         ShoppingCart cart = command.Cart;
 
-        //TODO: guardar a cesta no banco de dados (use Marten upsert - if exist = update, if not = insert)
-        //TODO: Update redis cache
+        await _repository.StoreBasket(cart, cancellationToken);
 
-        return new StoreBasketResult("username");
+        //TODO atualizar o cache
+
+        return new StoreBasketResult(cart.UserName);
     }
 }
